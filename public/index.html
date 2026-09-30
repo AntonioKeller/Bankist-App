@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cukiernia A.Keller – panel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <h1 id="bakery-name">Cukiernia A.Keller</h1>
+    <div id="status-bar" class="status-bar"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="zapytania">Zapytania <span class="badge" id="b-zapytania"></span></button>
+    <button class="tab" data-tab="zamowienia">Zamówienia <span class="badge" id="b-zamowienia"></span></button>
+    <button class="tab" data-tab="realizacja">Realizacja <span class="badge" id="b-realizacja"></span></button>
+    <button class="tab" data-tab="sms">SMS</button>
+  </nav>
+
+  <main>
+    <!-- ZAPYTANIA -->
+    <section id="tab-zapytania" class="panel active">
+      <div class="toolbar">
+        <div class="chips" id="inq-filter">
+          <button class="chip active" data-status="do_mnie">Do mnie</button>
+          <button class="chip" data-status="nowe">Szkice AI</button>
+          <button class="chip" data-status="odpowiedziane">Odpowiedziane</button>
+          <button class="chip" data-status="">Wszystkie</button>
+        </div>
+        <button class="btn" id="btn-new-inquiry">+ Dodaj zapytanie</button>
+      </div>
+      <div id="inquiries" class="list"></div>
+    </section>
+
+    <!-- ZAMÓWIENIA -->
+    <section id="tab-zamowienia" class="panel">
+      <div class="toolbar">
+        <span></span>
+        <button class="btn" id="btn-new-order">+ Nowe zamówienie</button>
+      </div>
+      <div class="columns">
+        <div>
+          <h2>Nowe – do zatwierdzenia</h2>
+          <div id="orders-new" class="list"></div>
+        </div>
+        <div>
+          <h2>Do oddzwonienia</h2>
+          <div id="orders-callback" class="list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REALIZACJA -->
+    <section id="tab-realizacja" class="panel">
+      <div class="columns three">
+        <div>
+          <h2>W realizacji</h2>
+          <div id="r-production" class="list"></div>
+        </div>
+        <div>
+          <h2>Odbiór osobisty – gotowe</h2>
+          <div id="r-pickup" class="list"></div>
+        </div>
+        <div>
+          <h2>Dostawa</h2>
+          <div id="r-delivery" class="list"></div>
+        </div>
+      </div>
+      <details class="done">
+        <summary>Zakończone (ostatnie)</summary>
+        <div id="r-done" class="list"></div>
+      </details>
+    </section>
+
+    <!-- SMS -->
+    <section id="tab-sms" class="panel">
+      <table class="sms-table">
+        <thead><tr><th>Kiedy</th><th>Zam.</th><th>Rodzaj</th><th>Telefon</th><th>Treść</th><th>Status</th></tr></thead>
+        <tbody id="sms-log"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Formularz zamówienia -->
+  <dialog id="order-dialog">
+    <form id="order-form" method="dialog">
+      <h2 id="order-dialog-title">Zamówienie</h2>
+      <label>Klient <input name="customer_name" /></label>
+      <label>Telefon <input name="phone" type="tel" /></label>
+      <label>Produkt <input name="product" placeholder="np. Tort czekoladowy 2 kg" /></label>
+      <label>Szczegóły <textarea name="details" rows="3" placeholder="smak, napis, dekoracje…"></textarea></label>
+      <label>Termin <input name="due_at" type="datetime-local" /></label>
+      <label>Sposób
+        <select name="fulfillment">
+          <option value="odbior">Odbiór osobisty</option>
+          <option value="dostawa">Dostawa</option>
+        </select>
+      </label>
+      <label class="addr">Adres dostawy <input name="address" /></label>
+      <label>Notatki <textarea name="notes" rows="2"></textarea></label>
+      <div class="actions">
+        <button type="button" class="btn ghost" value="cancel" id="order-cancel">Anuluj</button>
+        <button type="submit" class="btn" value="save">Zapisz</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Formularz zapytania dodawanego ręcznie -->
+  <dialog id="inquiry-dialog">
+    <form id="inquiry-form" method="dialog">
+      <h2>Nowe zapytanie</h2>
+      <label>Źródło
+        <select name="source">
+          <option value="telefon">Telefon</option>
+          <option value="email">E-mail</option>
+          <option value="www">Strona www</option>
+          <option value="facebook">Facebook</option>
+          <option value="instagram">Instagram</option>
+          <option value="inne">Inne</option>
+        </select>
+      </label>
+      <label>Kto <input name="name" /></label>
+      <label>Kontakt (tel./e-mail) <input name="contact" /></label>
+      <label>Treść <textarea name="message" rows="4" required></textarea></label>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="inquiry-cancel">Anuluj</button>
+        <button type="submit" class="btn">Dodaj i przeanalizuj</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toasts"></div>
+  <script src="app.js" type="module"></script>
+</body>
+</html>
